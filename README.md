@@ -4,7 +4,7 @@ Generate SSH key pairs with custom patterns in the public key.
 
 ```bash
 # Install
-cargo install --path .
+cargo install vanity-ssh-rs
 
 # Usage
 vanity-ssh-rs <pattern> [-t <threads>] [--ntfy <topic>]
