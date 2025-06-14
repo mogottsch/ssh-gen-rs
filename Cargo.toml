@@ -1,0 +1,20 @@
+[package]
+name = "ssh-gen-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+base64 = "0.22.1"
+clap = { version = "4.5.40", features = ["derive"] }
+ed25519-dalek = { version = "2.1.1", features = [
+    "rand_core",
+    "pkcs8",
+    "alloc",
+    "pem",
+    "std",
+] }
+indicatif = "0.17.11"
+num_cpus = "1.17.0"
+rand = "0.8"
+rayon = "1.10.0"
+ssh-key = "0.6.7"
