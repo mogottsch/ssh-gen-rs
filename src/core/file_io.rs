@@ -1,4 +1,4 @@
-use crate::keypair::KeyPair;
+use crate::core::keypair::KeyPair;
 use ssh_key::LineEnding;
 use ssh_key::private::{Ed25519Keypair, PrivateKey};
 use std::fs;
@@ -55,4 +55,3 @@ fn write_private_key_to_file(private_key: &PrivateKey, suffix: &str) -> std::io:
     let filename = format!("out/{}", suffix);
     std::fs::write(filename, pem.as_str())
 }
-

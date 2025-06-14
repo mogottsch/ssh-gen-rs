@@ -21,4 +21,4 @@ fn create_openssh_public_key_from_keypair(
 
 fn extract_base64_from_openssh_string(openssh_string: &str) -> &str {
     openssh_string.split_whitespace().nth(1).unwrap_or("")
-} 
+}

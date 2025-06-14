@@ -15,4 +15,4 @@ pub fn generate_keypair() -> KeyPair {
         public_key,
         private_key,
     }
-} 
+}
