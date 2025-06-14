@@ -27,10 +27,10 @@ fn main() {
                 attempts as f64 / duration.as_secs_f64()
             );
 
-            if let Err(e) = save_keypair_to_files(&key_pair) {
+            if let Err(e) = save_keypair_to_files(&key_pair, suffix) {
                 println!("Error saving keys: {}", e);
             } else {
-                println!("Keys saved to id_ed25519 and id_ed25519.pub");
+                println!("Keys saved to out/{} and out/{}.pub", suffix, suffix);
             }
             break;
         }
