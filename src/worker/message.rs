@@ -1,6 +1,11 @@
-use crate::core::keypair::KeyPair;
+use crate::core::{keypair::KeyPair, pattern::Pattern};
+
+pub struct SearchHit {
+    pub key_pair: KeyPair,
+    pub pattern: Pattern,
+}
 
 pub struct WorkerMessage {
     pub attempts: u64,
-    pub found_key: Option<KeyPair>,
+    pub search_hit: Option<SearchHit>,
 }

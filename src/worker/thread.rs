@@ -7,24 +7,26 @@ use crate::core::pattern::Pattern;
 use crate::worker::generator::generate_and_check_key;
 use crate::worker::message::WorkerMessage;
 
+use super::message::SearchHit;
+
 pub fn spawn_worker_threads(
     n_threads: usize,
-    pattern: Arc<Pattern>,
+    patterns: Arc<Vec<Pattern>>,
     tx: Sender<WorkerMessage>,
     stop_flag: Arc<AtomicBool>,
 ) -> Vec<thread::JoinHandle<()>> {
     (0..n_threads)
         .map(|_| {
             let tx = tx.clone();
-            let pattern = Arc::clone(&pattern);
+            let patterns = Arc::clone(&patterns);
             let stop_flag = Arc::clone(&stop_flag);
-            thread::spawn(move || run_worker_loop(pattern, tx, stop_flag))
+            thread::spawn(move || run_worker_loop(patterns, tx, stop_flag))
         })
         .collect()
 }
 
 pub fn run_worker_loop(
-    pattern: Arc<Pattern>,
+    patterns: Arc<Vec<Pattern>>,
     tx: Sender<WorkerMessage>,
     stop_flag: Arc<AtomicBool>,
 ) {
@@ -34,11 +36,10 @@ pub fn run_worker_loop(
         if stop_flag.load(Ordering::Relaxed) {
             break;
         }
-        let (key_pair, matches) = generate_and_check_key(&pattern);
         local_attempts += 1;
 
-        if matches {
-            send_success(&tx, key_pair, local_attempts);
+        if let Some((key_pair, pattern)) = generate_and_check_key(&patterns) {
+            send_success(&tx, key_pair, local_attempts, pattern);
             break;
         }
 
@@ -53,10 +54,14 @@ pub fn send_success(
     tx: &Sender<WorkerMessage>,
     key_pair: crate::core::keypair::KeyPair,
     attempts: u64,
+    pattern: Pattern,
 ) {
     tx.send(WorkerMessage {
         attempts,
-        found_key: Some(key_pair),
+        search_hit: Some(SearchHit {
+            key_pair,
+            pattern: pattern.clone(),
+        }),
     })
     .unwrap();
 }
@@ -64,7 +69,7 @@ pub fn send_success(
 pub fn send_progress_update(tx: &Sender<WorkerMessage>, attempts: u64) {
     tx.send(WorkerMessage {
         attempts,
-        found_key: None,
+        search_hit: None,
     })
     .unwrap();
 }

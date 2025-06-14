@@ -1,6 +1,7 @@
 use ed25519_dalek::{SigningKey, VerifyingKey};
 use rand::rngs::OsRng;
 
+#[derive(Debug, Clone)]
 pub struct KeyPair {
     pub public_key: VerifyingKey,
     pub private_key: SigningKey,

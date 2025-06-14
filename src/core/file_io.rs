@@ -30,9 +30,9 @@ fn create_ssh_keypair_from_ed25519_keys(keypair: &KeyPair) -> Ed25519Keypair {
     Ed25519Keypair::from_bytes(&key_bytes).unwrap()
 }
 
-fn write_public_key_to_file(private_key: &PrivateKey, suffix: &str) -> std::io::Result<()> {
+fn write_public_key_to_file(private_key: &PrivateKey, filename: &str) -> std::io::Result<()> {
     let public_key = private_key.public_key();
-    let filename = format!("out/{}.pub", suffix);
+    let filename = format!("out/{}.pub", filename);
     std::fs::write(filename, public_key.to_string())
 }
 
