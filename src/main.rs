@@ -1,4 +1,4 @@
-use ssh_gen_rs::{public_key_ends_with_suffix, generate_ed25519_keypair, save_keypair_to_files};
+use ssh_gen_rs::{generate_keypair, public_key_ends_with_suffix, save_keypair_to_files};
 use std::time::Instant;
 
 fn main() {
@@ -15,7 +15,7 @@ fn main() {
     let start = Instant::now();
 
     loop {
-        let key_pair = generate_ed25519_keypair();
+        let key_pair = generate_keypair();
         attempts += 1;
 
         if public_key_ends_with_suffix(&key_pair.public_key, suffix) {
