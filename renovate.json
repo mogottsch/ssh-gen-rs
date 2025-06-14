@@ -1,13 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
+  "extends": [
+    "config:base"
+  ],
   "packageRules": [
     {
-      "matchManagers": ["cargo"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Rust dependencies",
       "groupSlug": "rust-deps"
     }
-  ],
-  "schedule": ["weekly"]
+  ]
 }
