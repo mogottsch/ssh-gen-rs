@@ -3,7 +3,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::Sender;
 use std::thread;
 
-use crate::core::suffix::Pattern;
+use crate::core::pattern::Pattern;
 use crate::worker::generator::generate_and_check_key;
 use crate::worker::message::WorkerMessage;
 

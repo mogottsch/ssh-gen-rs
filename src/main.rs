@@ -11,7 +11,7 @@ mod monitor;
 mod worker;
 
 use cli::Args;
-use core::suffix::Pattern;
+use core::pattern::Pattern;
 use monitor::ntfy;
 use monitor::{monitor_progress, print_results};
 use worker::spawn_worker_threads;
@@ -42,7 +42,7 @@ fn main() {
     }
 }
 
-fn find_matching_key(pattern: Pattern, n_threads: usize) -> monitor::SearchResult {
+fn find_matching_key(pattern: Pattern, n_threads: usize) -> core::result::SearchResult {
     let pattern = Arc::new(pattern);
     let start = Instant::now();
     let (tx, rx) = channel();
@@ -52,7 +52,7 @@ fn find_matching_key(pattern: Pattern, n_threads: usize) -> monitor::SearchResul
 
     let _handles =
         spawn_worker_threads(n_threads, Arc::clone(&pattern), tx, Arc::clone(&stop_flag));
-    let result = monitor_progress(rx, start);
+    let result = monitor_progress(rx, start, &pattern);
     stop_flag.store(true, Ordering::Relaxed);
     result
 }

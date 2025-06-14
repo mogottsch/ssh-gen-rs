@@ -1,6 +1,6 @@
 use crate::core::file_io::save_keypair_to_files;
-use crate::core::suffix::Pattern;
-use crate::monitor::result::SearchResult;
+use crate::core::pattern::Pattern;
+use crate::core::result::SearchResult;
 use indicatif::{ProgressBar, ProgressStyle};
 use num_format::{Locale, ToFormattedString};
 

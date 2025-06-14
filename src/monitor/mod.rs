@@ -1,9 +1,7 @@
-pub mod formatter;
 pub mod ntfy;
 pub mod progress;
-pub mod result;
+pub mod results;
 
 pub use progress::monitor_progress;
-pub use result::SearchResult;
 
-pub use formatter::print_results;
+pub use results::print_results;

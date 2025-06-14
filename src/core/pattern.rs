@@ -1,6 +1,7 @@
 use ed25519_dalek::VerifyingKey;
 use regex::Regex;
 use ssh_key::private::Ed25519Keypair;
+use std::time::Duration;
 
 pub enum Pattern {
     Suffix(String),
@@ -31,6 +32,27 @@ impl Pattern {
                 format!("regex_{}", clean)
             }
         }
+    }
+
+    pub fn probability(&self) -> Option<f64> {
+        match self {
+            Pattern::Suffix(suffix) => {
+                // Base64 has 64 possible characters
+                let base: f64 = 64.0;
+                // Probability is (1/64)^n where n is the length of the suffix
+                Some(1.0 / base.powi(suffix.len() as i32))
+            }
+            Pattern::Regex(_) => None, // Regex patterns are too complex to calculate probability
+        }
+    }
+
+    pub fn estimate_time(&self, keys_per_second: f64) -> Option<String> {
+        self.probability().map(|prob| {
+            let expected_attempts = 1.0 / prob;
+            let seconds = expected_attempts / keys_per_second;
+            let duration = Duration::from_secs_f64(seconds);
+            humantime::format_duration(duration).to_string()
+        })
     }
 }
 

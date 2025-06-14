@@ -13,6 +13,7 @@ ed25519-dalek = { version = "2.1.1", features = [
     "pem",
     "std",
 ] }
+humantime = "2.2.0"
 indicatif = "0.17.11"
 num-format = "0.4.4"
 num_cpus = "1.17.0"
