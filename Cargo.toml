@@ -14,6 +14,7 @@ ed25519-dalek = { version = "2.1.1", features = [
     "std",
 ] }
 indicatif = "0.17.11"
+num-format = "0.4.4"
 num_cpus = "1.17.0"
 rand = "0.8"
 rayon = "1.10.0"
