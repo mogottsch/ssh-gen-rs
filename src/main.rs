@@ -7,12 +7,12 @@ use std::time::Instant;
 
 mod cli;
 mod core;
-mod monitor;
+mod manager;
 mod worker;
 
 use cli::Args;
 use core::pattern::Pattern;
-use monitor::monitor_progress;
+use manager::manager::run_manager;
 use worker::spawn_worker_threads;
 
 fn main() {
@@ -47,6 +47,6 @@ fn find_matching_key(patterns: Vec<Pattern>, n_threads: usize, args: Args) {
     let _handles =
         spawn_worker_threads(n_threads, Arc::clone(&patterns), tx, Arc::clone(&stop_flag));
 
-    monitor_progress(rx, start, &patterns, &args);
+    run_manager(rx, start, &patterns, &args);
     stop_flag.store(true, Ordering::Relaxed);
 }

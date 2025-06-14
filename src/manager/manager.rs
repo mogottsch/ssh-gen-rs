@@ -12,12 +12,7 @@ use crate::worker::message::WorkerMessage;
 
 use super::ntfy::notify;
 
-pub fn monitor_progress(
-    rx: Receiver<WorkerMessage>,
-    start: Instant,
-    patterns: &[Pattern],
-    args: &Args,
-) {
+pub fn run_manager(rx: Receiver<WorkerMessage>, start: Instant, patterns: &[Pattern], args: &Args) {
     let mut total_attempts = 0;
     let mut pattern_key_pairs: HashMap<Pattern, Vec<KeyPair>> = HashMap::new();
 
