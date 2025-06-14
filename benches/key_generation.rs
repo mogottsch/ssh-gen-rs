@@ -1,7 +1,7 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-use ssh_gen_rs::core::keypair::generate_keypair;
-use ssh_gen_rs::core::pattern::{Pattern, public_key_matches_pattern};
 use std::hint::black_box;
+use vanity_ssh_rs::core::keypair::generate_keypair;
+use vanity_ssh_rs::core::pattern::{Pattern, public_key_matches_pattern};
 
 fn bench_generate_key(c: &mut Criterion) {
     c.bench_function("generate_keypair", |b| {
