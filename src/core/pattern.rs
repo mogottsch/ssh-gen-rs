@@ -88,6 +88,9 @@ impl Pattern {
         self.probability().map(|prob| {
             let expected_attempts = 1.0 / prob;
             let seconds = expected_attempts / keys_per_second;
+            if seconds > u64::MAX as f64 {
+                return "∞".to_string();
+            }
             let duration = Duration::from_secs_f64(seconds);
             humantime::format_duration(duration).to_string()
         })
