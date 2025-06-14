@@ -7,7 +7,7 @@ if [ -z "$PRIVATE_KEY" ]; then
   exit 1
 fi
 
-chmod 600 ./"$PRIVATE_KEY"
-ssh-keygen -y -f ./$PRIVATE_KEY | diff -b - ./"$PRIVATE_KEY.pub"
+chmod 600 "$PRIVATE_KEY"
+ssh-keygen -y -f $PRIVATE_KEY | diff -b - "$PRIVATE_KEY.pub"
 
 
