@@ -2,6 +2,12 @@
 name = "vanity-ssh-rs"
 version = "0.1.0"
 edition = "2024"
+description = "Generate SSH key pairs with custom patterns in the public key"
+license = "MIT"
+repository = "https://github.com/mogottsch/vanity-ssh-rs"
+readme = "README.md"
+keywords = ["ssh", "key", "vanity", "generator", "crypto"]
+categories = ["cryptography", "command-line-utilities"]
 
 [dependencies]
 base64 = "0.22.1"
