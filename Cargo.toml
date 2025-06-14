@@ -18,7 +18,10 @@ num-format = "0.4.4"
 num_cpus = "1.17.0"
 rand = "0.8"
 rayon = "1.10.0"
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+serde_json = "1.0.140"
 ssh-key = "0.6.7"
+tokio = { version = "1.45.1", features = ["full"] }
 
 [dev-dependencies]
 criterion = { version = "0.6.0", features = ["html_reports"] }

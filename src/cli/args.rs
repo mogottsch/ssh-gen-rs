@@ -9,4 +9,8 @@ pub struct Args {
     /// Number of threads to use (defaults to number of CPU cores)
     #[arg(short, long)]
     pub threads: Option<usize>,
+
+    /// ntfy.sh topic to notify when key is found
+    #[arg(long)]
+    pub ntfy: Option<String>,
 }

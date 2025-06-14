@@ -14,7 +14,7 @@ pub fn monitor_progress(rx: Receiver<WorkerMessage>, start: Instant) -> SearchRe
     pb.set_style(
         ProgressStyle::default_spinner()
             .template("{spinner:.green} [{elapsed_precise}] {msg}")
-            .unwrap()
+            .unwrap(),
     );
 
     while found_key_pair.is_none() {

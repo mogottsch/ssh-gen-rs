@@ -5,11 +5,7 @@ use num_format::{Locale, ToFormattedString};
 
 pub fn print_results(result: &SearchResult, suffix: &str) {
     let pb = ProgressBar::new(1);
-    pb.set_style(
-        ProgressStyle::default_bar()
-            .template("{msg}")
-            .unwrap()
-    );
+    pb.set_style(ProgressStyle::default_bar().template("{msg}").unwrap());
 
     pb.println(format!(
         "✨ Found matching key after {} attempts!",
@@ -27,7 +23,10 @@ pub fn print_results(result: &SearchResult, suffix: &str) {
     if let Err(e) = save_keypair_to_files(&result.key_pair, suffix) {
         pb.println(format!("❌ Error saving keys: {}", e));
     } else {
-        pb.println(format!("💾 Keys saved to out/{} and out/{}.pub", suffix, suffix));
+        pb.println(format!(
+            "💾 Keys saved to out/{} and out/{}.pub",
+            suffix, suffix
+        ));
     }
 
     pb.finish_and_clear();
