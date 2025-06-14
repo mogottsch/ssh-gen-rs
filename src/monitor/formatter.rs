@@ -1,9 +1,10 @@
 use crate::core::file_io::save_keypair_to_files;
+use crate::core::suffix::Pattern;
 use crate::monitor::result::SearchResult;
 use indicatif::{ProgressBar, ProgressStyle};
 use num_format::{Locale, ToFormattedString};
 
-pub fn print_results(result: &SearchResult, suffix: &str) {
+pub fn print_results(result: &SearchResult, pattern: &str) -> std::io::Result<()> {
     let pb = ProgressBar::new(1);
     pb.set_style(ProgressStyle::default_bar().template("{msg}").unwrap());
 
@@ -20,14 +21,15 @@ pub fn print_results(result: &SearchResult, suffix: &str) {
         result.total_attempts as f64 / result.duration.as_secs_f64()
     ));
 
-    if let Err(e) = save_keypair_to_files(&result.key_pair, suffix) {
-        pb.println(format!("❌ Error saving keys: {}", e));
-    } else {
-        pb.println(format!(
-            "💾 Keys saved to out/{} and out/{}.pub",
-            suffix, suffix
-        ));
-    }
+    let key_pair = &result.key_pair;
+    let pattern = Pattern::new(pattern.to_string()).unwrap();
+    let filename = pattern.to_filename();
+    save_keypair_to_files(key_pair, &filename)?;
+    pb.println(format!(
+        "💾 Keys saved to out/{} and out/{}.pub",
+        filename, filename
+    ));
 
     pb.finish_and_clear();
+    Ok(())
 }

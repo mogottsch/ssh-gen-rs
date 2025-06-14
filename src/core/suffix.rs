@@ -1,11 +1,48 @@
 use ed25519_dalek::VerifyingKey;
+use regex::Regex;
 use ssh_key::private::Ed25519Keypair;
 
-pub fn public_key_ends_with_suffix(public_key: &VerifyingKey, suffix: &str) -> bool {
+pub enum Pattern {
+    Suffix(String),
+    Regex(Regex),
+}
+
+impl Pattern {
+    pub fn new(pattern: String) -> Result<Self, regex::Error> {
+        if pattern.starts_with('/') && pattern.ends_with('/') {
+            let pattern = pattern[1..pattern.len() - 1].to_string();
+            Ok(Pattern::Regex(Regex::new(&pattern)?))
+        } else {
+            Ok(Pattern::Suffix(pattern))
+        }
+    }
+
+    pub fn to_filename(&self) -> String {
+        match self {
+            Pattern::Suffix(suffix) => suffix.clone(),
+            Pattern::Regex(regex) => {
+                let pattern = regex.as_str();
+                // Remove special characters and limit length
+                let clean = pattern
+                    .chars()
+                    .take(20)
+                    .map(|c| if c.is_alphanumeric() { c } else { '_' })
+                    .collect::<String>();
+                format!("regex_{}", clean)
+            }
+        }
+    }
+}
+
+pub fn public_key_matches_pattern(public_key: &VerifyingKey, pattern: &Pattern) -> bool {
     let openssh_pubkey = create_openssh_public_key_from_keypair(public_key);
     let openssh_pubkey_str = openssh_pubkey.to_string();
     let base64_part = extract_base64_from_openssh_string(&openssh_pubkey_str);
-    base64_part.ends_with(suffix)
+
+    match pattern {
+        Pattern::Suffix(suffix) => base64_part.ends_with(suffix),
+        Pattern::Regex(regex) => regex.is_match(base64_part),
+    }
 }
 
 fn create_openssh_public_key_from_keypair(

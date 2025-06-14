@@ -1,8 +1,8 @@
 use crate::core::keypair::{KeyPair, generate_keypair};
-use crate::core::suffix::public_key_ends_with_suffix;
+use crate::core::suffix::{Pattern, public_key_matches_pattern};
 
-pub fn generate_and_check_key(suffix: &str) -> (KeyPair, bool) {
-    let key_pair = generate_keypair();
-    let matches = public_key_ends_with_suffix(&key_pair.public_key, suffix);
-    (key_pair, matches)
+pub fn generate_and_check_key(pattern: &Pattern) -> (KeyPair, bool) {
+    let keypair = generate_keypair();
+    let matches = public_key_matches_pattern(&keypair.public_key, pattern);
+    (keypair, matches)
 }

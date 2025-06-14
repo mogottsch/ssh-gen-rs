@@ -4,30 +4,16 @@ use ssh_key::private::{Ed25519Keypair, PrivateKey};
 use std::fs;
 use std::path::Path;
 
-pub fn save_keypair_to_files(keypair: &KeyPair, suffix: &str) -> std::io::Result<()> {
-    let safe_suffix = make_suffix_filesystem_safe(suffix);
+pub fn save_keypair_to_files(keypair: &KeyPair, filename: &str) -> std::io::Result<()> {
     create_out_directory()?;
 
     let ed25519_keypair = create_ssh_keypair_from_ed25519_keys(keypair);
     let private_key = PrivateKey::from(ed25519_keypair);
 
-    write_public_key_to_file(&private_key, &safe_suffix)?;
-    write_private_key_to_file(&private_key, &safe_suffix)?;
+    write_public_key_to_file(&private_key, &filename)?;
+    write_private_key_to_file(&private_key, &filename)?;
 
     Ok(())
-}
-
-fn make_suffix_filesystem_safe(suffix: &str) -> String {
-    suffix
-        .chars()
-        .map(|c| {
-            if c.is_ascii_alphanumeric() || c == '_' || c == '-' {
-                c
-            } else {
-                '_'
-            }
-        })
-        .collect()
 }
 
 fn create_out_directory() -> std::io::Result<()> {
