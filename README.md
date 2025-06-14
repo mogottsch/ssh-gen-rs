@@ -1,4 +1,4 @@
-# ssh-gen-rs
+# vanity-ssh-rs
 
 Generate SSH key pairs with custom patterns in the public key.
 
@@ -7,14 +7,14 @@ Generate SSH key pairs with custom patterns in the public key.
 cargo install --path .
 
 # Usage
-ssh-gen-rs <pattern> [-t <threads>] [--ntfy <topic>]
+vanity-ssh-rs <pattern> [-t <threads>] [--ntfy <topic>]
 
 # Examples
 # Match suffix
-ssh-gen-rs yee
+vanity-ssh-rs yee
 
 # Match regex pattern with ntfy notification
-ssh-gen-rs "/(?i)hello/" --ntfy mytopic
+vanity-ssh-rs "/(?i)hello/" --ntfy mytopic
 ```
 
 - `pattern`: The pattern to match in the public key. Use `/regex/` for regex patterns, otherwise matches suffix.
