@@ -1,6 +1,6 @@
 [package]
 name = "vanity-ssh-rs"
-version = "0.2.0"
+version = "1.0.0"
 edition = "2024"
 description = "Generate SSH key pairs with custom patterns in the public key"
 license = "MIT"
