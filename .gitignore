@@ -10,6 +10,7 @@ www/vanity_ssh_rs.*
 www/package.json
 www/*.wasm
 www/*.wasm.d.ts
+dist/
 
 # Profiling
 flamegraph.svg

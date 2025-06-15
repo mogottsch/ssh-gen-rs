@@ -4,14 +4,13 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::channel;
 use std::time::Instant;
+use core::pattern::Pattern;
 
 mod cli;
-mod core;
 mod manager;
 mod worker;
 
 use cli::Args;
-use core::pattern::Pattern;
 use manager::manager::run_manager;
 use worker::spawn_worker_threads;
 

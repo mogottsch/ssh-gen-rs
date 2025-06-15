@@ -1,4 +1,4 @@
-use crate::core::{keypair::KeyPair, pattern::Pattern};
+use core::{keypair::KeyPair, pattern::Pattern};
 
 pub struct SearchHit {
     pub key_pair: KeyPair,

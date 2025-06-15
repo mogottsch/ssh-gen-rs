@@ -1,0 +1,12 @@
+[build]
+target = "wasm/index.html"
+release = false
+
+[watch]
+watch = ["core/src", "wasm"]
+ignore = ["target"]
+
+[serve]
+port = 8080
+open = true
+

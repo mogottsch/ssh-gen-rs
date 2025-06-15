@@ -3,54 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanity SSH Key Generator</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>SSH Key Generator</title>
+    <link data-trunk rel="css" href="style.css" />
+    <link data-trunk rel="rust" data-target-name="wasm" />
   </head>
+
   <body>
     <div class="container">
-      <h1>Vanity SSH Key Generator</h1>
+      <h1>SSH Key Generator</h1>
+      <div class="warning">
+        <p>
+          ⚠️ This tool generates SSH keys in your browser. Your keys never leave
+          your computer.
+        </p>
+      </div>
 
-      <div class="input-section">
-        <input
-          type="text"
-          id="pattern"
-          placeholder="Enter pattern (e.g., 'yee' or '/hello/')"
-        />
-        <button id="generate">Generate</button>
+      <div class="input-group">
+        <label for="pattern"
+          >Pattern to match (e.g., "ssh-rsa
+          AAAAB3NzaC1yc2EAAAADAQABAAABAQ"):</label
+        >
+        <input type="text" id="pattern" placeholder="Enter pattern to match" />
+      </div>
+
+      <div class="button-group">
+        <button id="generate" class="primary">Generate Key</button>
         <button id="stop" disabled>Stop</button>
+        <button id="download" disabled>Download Keys</button>
       </div>
 
       <div class="stats">
-        <div>Attempts: <span id="attempts">0</span></div>
-        <div>Rate: <span id="rate">0</span> keys/s</div>
-        <div id="error" class="error"></div>
+        <p>Attempts: <span id="attempts">0</span></p>
+        <p>Rate: <span id="rate">0</span> keys/sec</p>
       </div>
+
+      <span id="error" class="error" style="display: none"></span>
 
       <div id="results" class="results hidden">
-        <h2>Found a matching key!</h2>
-        <div class="key-section">
-          <h3>Public Key</h3>
+        <div class="key-group">
+          <h3>Public Key:</h3>
           <pre id="public-key"></pre>
-          <button class="copy-btn" data-target="public-key">Copy</button>
         </div>
-        <div class="key-section">
-          <h3>Private Key</h3>
+        <div class="key-group">
+          <h3>Private Key:</h3>
           <pre id="private-key"></pre>
-          <button class="copy-btn" data-target="private-key">Copy</button>
         </div>
-        <button id="download">Download Keys</button>
-      </div>
-
-      <div class="warning">
-        <h3>⚠️ Security Warning</h3>
-        <p>
-          This tool generates SSH keys in your browser. While convenient,
-          browser-based key generation is generally less secure than using
-          native applications. For maximum security, consider using the native
-          version of this tool.
-        </p>
       </div>
     </div>
-    <script type="module" src="app.js"></script>
   </body>
 </html>

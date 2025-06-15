@@ -1,10 +1,10 @@
-use ed25519_dalek::VerifyingKey;
 use regex::Regex;
-use ssh_key::private::Ed25519Keypair;
 use std::fmt::Display;
 use std::hash::{Hash, Hasher};
 use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
+
+use crate::keypair::KeyPair;
 
 #[derive(Debug, Clone)]
 pub enum Pattern {
@@ -95,30 +95,17 @@ impl Pattern {
             humantime::format_duration(duration).to_string()
         })
     }
-}
 
-pub fn public_key_matches_pattern(public_key: &VerifyingKey, pattern: &Pattern) -> bool {
-    let openssh_pubkey = create_openssh_public_key_from_keypair(public_key);
-    let openssh_pubkey_str = openssh_pubkey.to_string();
-    let base64_part = extract_base64_from_openssh_string(&openssh_pubkey_str);
+    pub fn matches_keypair(&self, keypair: &KeyPair) -> bool {
+        let base64_part = keypair.public_key_string_base64_part();
 
-    match pattern {
-        Pattern::Suffix(suffix) => base64_part.ends_with(suffix),
-        Pattern::Regex(regex) => regex.is_match(base64_part),
+        self.matches_string(&base64_part)
     }
-}
 
-pub fn create_openssh_public_key_from_keypair(
-    verifying_key: &ed25519_dalek::VerifyingKey,
-) -> ssh_key::public::PublicKey {
-    let mut key_bytes = [0u8; 64];
-    key_bytes[32..].copy_from_slice(&verifying_key.to_bytes());
-
-    let ed25519_keypair = ssh_key::private::Ed25519Keypair::from_bytes(&key_bytes).unwrap();
-    let openssh_pub = ssh_key::public::Ed25519PublicKey::from(&ed25519_keypair);
-    ssh_key::public::PublicKey::from(openssh_pub)
-}
-
-fn extract_base64_from_openssh_string(openssh_string: &str) -> &str {
-    openssh_string.split_whitespace().nth(1).unwrap_or("")
+    pub fn matches_string(&self, base64_part: &str) -> bool {
+        match self {
+            Pattern::Suffix(suffix) => base64_part.ends_with(suffix),
+            Pattern::Regex(regex) => regex.is_match(base64_part),
+        }
+    }
 }

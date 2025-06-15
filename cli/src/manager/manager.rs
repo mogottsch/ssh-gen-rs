@@ -5,9 +5,9 @@ use std::sync::mpsc::Receiver;
 use std::time::{Duration, Instant};
 
 use crate::cli::Args;
-use crate::core::file_io::save_keypair_to_files;
-use crate::core::keypair::KeyPair;
-use crate::core::pattern::Pattern;
+use core::file_io::save_keypair_to_files;
+use core::keypair::KeyPair;
+use core::pattern::Pattern;
 use crate::worker::message::WorkerMessage;
 
 use super::ntfy::notify;

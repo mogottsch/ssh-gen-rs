@@ -1,7 +1,12 @@
+use core::keypair::generate_keypair;
+use core::pattern::Pattern;
 use wasm_bindgen::prelude::*;
-use crate::core::keypair::KeyPair;
-use crate::core::pattern::Pattern;
-use ed25519_dalek::pkcs8::EncodePrivateKey;
+
+#[wasm_bindgen]
+pub fn init() {
+    // Initialize panic hook for better error messages in WASM
+    std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+}
 
 #[wasm_bindgen]
 pub struct JsKeyPair {
@@ -28,6 +33,7 @@ impl JsKeyPair {
 }
 
 #[wasm_bindgen]
+#[derive(Debug, Clone)]
 pub struct KeyGenerator {
     patterns: Vec<Pattern>,
     attempts: u64,
@@ -48,7 +54,8 @@ impl KeyGenerator {
             }
         }
         Ok(KeyGenerator {
-            patterns: patterns.into_iter()
+            patterns: patterns
+                .into_iter()
                 .map(|p| Pattern::new(p))
                 .collect::<Result<Vec<_>, _>>()
                 .map_err(|e| JsValue::from_str(&e.to_string()))?,
@@ -72,9 +79,15 @@ impl KeyGenerator {
         let mut found: Option<JsKeyPair> = None;
         for _ in 0..batch_size {
             self.attempts += 1;
-            if let Some((key_pair, _)) = crate::worker::generator::generate_and_check_key(&self.patterns) {
-                let public_key_str = crate::core::pattern::create_openssh_public_key_from_keypair(&key_pair.public_key).to_string();
-                let private_key_str = key_pair.private_key.to_pkcs8_pem(Default::default()).unwrap().to_string();
+            let key_pair = generate_keypair();
+
+            if self
+                .patterns
+                .iter()
+                .any(|pattern| pattern.matches_keypair(&key_pair))
+            {
+                let public_key_str = key_pair.public_key_string();
+                let private_key_str = key_pair.private_key_string();
                 found = Some(JsKeyPair::from_keypair(&public_key_str, &private_key_str));
                 break;
             }
@@ -92,4 +105,4 @@ impl KeyGenerator {
     pub fn get_last_error(&self) -> Option<String> {
         self.last_error.clone()
     }
-} 
+}

@@ -1,4 +1,3 @@
-pub mod generator;
 pub mod message;
 pub mod thread;
 

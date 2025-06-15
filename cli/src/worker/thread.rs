@@ -1,11 +1,11 @@
-use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::Sender;
+use std::sync::Arc;
 use std::thread;
 
-use crate::core::pattern::Pattern;
-use crate::worker::generator::generate_and_check_key;
 use crate::worker::message::WorkerMessage;
+use core::keypair::{generate_and_check_key, KeyPair};
+use core::pattern::Pattern;
 
 use super::message::SearchHit;
 
@@ -52,7 +52,7 @@ pub fn run_worker_loop(
 
 pub fn send_success(
     tx: &Sender<WorkerMessage>,
-    key_pair: crate::core::keypair::KeyPair,
+    key_pair: KeyPair,
     attempts: u64,
     pattern: Pattern,
 ) {

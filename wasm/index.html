@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SSH Key Generator</title>
+  <link data-trunk rel="css" href="style.css" />
+  <link data-trunk rel="rust" data-target-name="wasm" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>SSH Key Generator</h1>
+    <div class="warning">
+      <p>
+        ⚠️ This tool generates SSH keys in your browser. Your keys never leave
+        your computer.
+      </p>
+    </div>
+
+    <div class="input-group">
+      <label for="pattern">Pattern to match (e.g., "ssh-rsa
+        AAAAB3NzaC1yc2EAAAADAQABAAABAQ"):</label>
+      <input type="text" id="pattern" placeholder="Enter pattern to match" />
+    </div>
+
+    <div class="button-group">
+      <button id="generate" class="primary">Generate Key</button>
+      <button id="stop" disabled>Stop</button>
+      <button id="download" disabled>Download Keys</button>
+    </div>
+
+    <div class="stats">
+      <p>Attempts: <span id="attempts">0</span></p>
+      <p>Rate: <span id="rate">0</span> keys/sec</p>
+    </div>
+
+    <span id="error" class="error" style="display: none"></span>
+
+    <div id="results" class="results hidden">
+      <div class="key-group">
+        <h3>Public Key:</h3>
+        <pre id="public-key"></pre>
+      </div>
+      <div class="key-group">
+        <h3>Private Key:</h3>
+        <pre id="private-key"></pre>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
