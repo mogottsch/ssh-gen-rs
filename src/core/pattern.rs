@@ -108,13 +108,13 @@ pub fn public_key_matches_pattern(public_key: &VerifyingKey, pattern: &Pattern) 
     }
 }
 
-fn create_openssh_public_key_from_keypair(
-    verifying_key: &VerifyingKey,
+pub fn create_openssh_public_key_from_keypair(
+    verifying_key: &ed25519_dalek::VerifyingKey,
 ) -> ssh_key::public::PublicKey {
     let mut key_bytes = [0u8; 64];
     key_bytes[32..].copy_from_slice(&verifying_key.to_bytes());
 
-    let ed25519_keypair = Ed25519Keypair::from_bytes(&key_bytes).unwrap();
+    let ed25519_keypair = ssh_key::private::Ed25519Keypair::from_bytes(&key_bytes).unwrap();
     let openssh_pub = ssh_key::public::Ed25519PublicKey::from(&ed25519_keypair);
     ssh_key::public::PublicKey::from(openssh_pub)
 }

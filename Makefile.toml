@@ -1,0 +1,31 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+[tasks.install-wasm-pack]
+description = "Install wasm-pack if not already installed"
+command = "cargo"
+args = ["install", "wasm-pack", "--force"]
+
+[tasks.build-wasm]
+description = "Build the WASM module"
+dependencies = ["install-wasm-pack"]
+command = "wasm-pack"
+args = ["build", "--target", "web"]
+
+[tasks.copy-wasm]
+description = "Copy the built WASM files to the www directory"
+dependencies = ["build-wasm"]
+script = [
+    "mkdir -p www/pkg",
+    "cp -r pkg/* www/pkg/"
+]
+
+[tasks.serve]
+description = "Start a local server to serve the files"
+dependencies = ["copy-wasm"]
+command = "python3"
+args = ["-m", "http.server", "8080", "--directory", "www"]
+
+[tasks.dev]
+description = "Build and serve the WASM project"
+dependencies = ["serve"] 

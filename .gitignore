@@ -1,4 +1,23 @@
+# Rust
 /target
+**/*.rs.bk
+Cargo.lock
+
+# WASM
+pkg/
+www/pkg/
+www/vanity_ssh_rs.*
+www/package.json
+www/*.wasm
+www/*.wasm.d.ts
+
+# Profiling
 flamegraph.svg
 perf.data*
 out
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
